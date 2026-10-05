@@ -1,41 +1,14 @@
 # Genome Visualization in R
 
+## What it does
+
 Reusable templates for chromosome maps, linear and circular genome tracks, interval connections and regional views. All figures share one synthetic genome, consistent chromosome order and explicit coordinate conventions.
 
 ![Genome visualization gallery](figures/combined.png)
 
-## Run
+## Input
 
-Install the packages listed at the top of `run.R`, then run from this directory:
-
-```r
-source('run.R')
-```
-
-Or use `Rscript run.R`. Five individual figures and one composite are exported as PNG and vector SVG. No online data retrieval is required after installation.
-
-## Figures
-
-| Output | Content |
-|---|---|
-| `positions` | Chromosome lengths, target genes and highlighted regions |
-| `linear` | Gene density, GC fraction and interval signal across chromosomes |
-| `circular` | The same three metrics, with genomic interval ribbons |
-| `links` | Interval-to-interval connections without additional tracks |
-| `regional` | Aligned metrics and strand-aware gene spans in a selected window |
-| `combined` | Global views and regional detail with panel labels and unequal row heights |
-
-## Structure
-
-```text
-run.R       Dependencies, configuration and export
-plots.R     Data generation, validation and plotting functions
-README.md   Usage and data conventions
-data/       Five example CSVs
-figures/    PNG and SVG outputs
-```
-
-## Input data
+### Input data
 
 | File | Required columns |
 |---|---|
@@ -51,7 +24,56 @@ figures/    PNG and SVG outputs
 
 The example contains six fictional chromosomes, 545 one-megabase bins, 288 gene spans, six highlighted regions and eight links. It does not represent a biological reference assembly. Gene density counts gene midpoints per Mb; GC is a simulated fraction in [0, 1]; signal is simulated in arbitrary units. Links are illustrative correspondences, not inferred rearrangements, and ribbon width reflects interval span. Gene arrows show whole-gene spans and direction, not exon structure.
 
-## Customize
+## Output
+
+### Figures
+
+| Output | Content |
+|---|---|
+| `positions` | Chromosome lengths, target genes and highlighted regions |
+| `linear` | Gene density, GC fraction and interval signal across chromosomes |
+| `circular` | The same three metrics, with genomic interval ribbons |
+| `links` | Interval-to-interval connections without additional tracks |
+| `regional` | Aligned metrics and strand-aware gene spans in a selected window |
+| `combined` | Global views and regional detail with panel labels and unequal row heights |
+
+## Try it
+
+### Run
+
+Install the packages listed at the top of `run.R`, then run from this directory:
+
+```r
+source('run.R')
+```
+
+Or use `Rscript run.R`. Five individual figures and one composite are exported as PNG and vector SVG. No online data retrieval is required after installation.
+
+### Verify the example
+
+The bundled example completed in **57.79 seconds** on an Intel macOS machine with R 4.6.1 (six synthetic chromosomes and 545 bins); installation is excluded. This is a measured example, not a runtime guarantee. No additional data download is needed and normal runs preserve the input CSVs.
+
+```bash
+Rscript verify_outputs.R
+```
+
+Install the required CRAN packages once:
+
+```r
+install.packages(c("ggplot2", "patchwork", "circlize", "gridGraphics", "ggrepel", "ragg", "svglite"), repos = "https://cloud.r-project.org")
+```
+
+### Structure
+
+```text
+run.R       Dependencies, configuration and export
+plots.R     Data generation, validation and plotting functions
+README.md   Usage and data conventions
+data/       Five example CSVs
+figures/    PNG and SVG outputs
+```
+
+### Customize
 
 Set `zoom_chr`, `zoom_start`, `zoom_end` and `image_dpi` in `run.R`. Adjust the patchwork design (`AB / CC / DD`) and row heights to change the composite layout. Set `regenerate_example <- TRUE` only to overwrite the five example CSVs with reproducible data (seed 42).
 
@@ -59,6 +81,7 @@ Functions in `plots.R` can be reused independently. The linear and regional plot
 
 Tested with R 4.6.1 on macOS; package versions are listed in `run.R`.
 
-## References
+### References
 
 [circlize](https://jokergoo.github.io/circlize_book/book/) · [ggplot2](https://ggplot2.tidyverse.org/) · [patchwork](https://patchwork.data-imaginist.com/)
+
